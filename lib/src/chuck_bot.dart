@@ -15,19 +15,19 @@ class ChuckBot {
           timeout: timeout,
         );
 
-  static void initialize({
+  static Future<void> initialize({
     required String token,
     required String chatId,
     LoggerOptions? loggerOptions,
     Duration? timeout,
-  }) {
+  }) async {
     _instance ??= ChuckBot(
       token: token,
       chatId: chatId,
       loggerOptions: loggerOptions,
       timeout: timeout,
     );
-    instance.start();
+    await instance.start();
     instance.listenMessages();
   }
 

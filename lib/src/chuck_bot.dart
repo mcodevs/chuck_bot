@@ -2,22 +2,27 @@ import 'package:televerse/televerse.dart';
 
 class ChuckBot {
   final Bot bot;
+  final String chatId;
 
   ChuckBot({
     required String token,
+    required this.chatId,
     LoggerOptions? loggerOptions,
     Duration? timeout,
-  }) : bot = Bot(
+  }) : bot = Bot.local(
           token,
           loggerOptions: loggerOptions,
           timeout: timeout,
         );
 
-  static Future<void> initialize({
+  static void initialize({
     required String token,
-  }) async {
-    _instance ??= ChuckBot(token: token);
-    await instance.start();
+    required String chatId,
+  }) {
+    _instance ??= ChuckBot(
+      token: token,
+      chatId: chatId,
+    );
   }
 
   static ChuckBot? _instance;
@@ -30,13 +35,14 @@ class ChuckBot {
     return _instance!;
   }
 
-  Future<void> start() async => await bot.start();
-
   Future<void> recordError(
     Object e, [
     StackTrace? stackTrace,
   ]) async {
-    await bot;
+    await bot.api.sendMessage(
+      SupergroupID(chatId),
+      _formatError(e, stackTrace),
+    );
   }
 
   String _formatError(Object e, [StackTrace? stackTrace]) {

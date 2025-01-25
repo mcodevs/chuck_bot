@@ -13,15 +13,19 @@ class ChuckBot {
           token,
           loggerOptions: loggerOptions,
           timeout: timeout,
-        );
+        )..start();
 
   static void initialize({
     required String token,
     required String chatId,
+    LoggerOptions? loggerOptions,
+    Duration? timeout,
   }) {
     _instance ??= ChuckBot(
       token: token,
       chatId: chatId,
+      loggerOptions: loggerOptions,
+      timeout: timeout,
     );
   }
 
@@ -42,6 +46,14 @@ class ChuckBot {
     await bot.api.sendMessage(
       SupergroupID(chatId),
       _formatError(e, stackTrace),
+    );
+  }
+
+  void listenMessages() {
+    bot.onMessage(
+      (ctx) {
+        print(ctx.message);
+      },
     );
   }
 

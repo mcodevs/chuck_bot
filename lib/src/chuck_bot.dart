@@ -13,7 +13,7 @@ class ChuckBot {
           token,
           loggerOptions: loggerOptions,
           timeout: timeout,
-        )..start();
+        );
 
   static void initialize({
     required String token,
@@ -27,6 +27,8 @@ class ChuckBot {
       loggerOptions: loggerOptions,
       timeout: timeout,
     );
+    instance.start();
+    instance.listenMessages();
   }
 
   static ChuckBot? _instance;
@@ -55,6 +57,10 @@ class ChuckBot {
         print(ctx.message);
       },
     );
+  }
+
+  Future<void> start() async {
+    await bot.start();
   }
 
   String _formatError(Object e, [StackTrace? stackTrace]) {

@@ -9,7 +9,7 @@ class ChuckBot {
     required this.chatId,
     LoggerOptions? loggerOptions,
     Duration? timeout,
-  }) : bot = Bot.local(
+  }) : bot = Bot(
           token,
           loggerOptions: loggerOptions,
           timeout: timeout,
